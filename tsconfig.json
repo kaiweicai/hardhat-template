@@ -7,7 +7,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["es2020"],
-    "module": "commonjs",
+    // "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "removeComments": true,
@@ -17,6 +17,6 @@
     "target": "es2020"
   },
   "exclude": ["node_modules"],
-  "files": ["./hardhat.config.ts"],
+  "files": ["./hardhat.config.ts", "./test/airdrop/newFile.ts"],
   "include": ["src/**/*", "tasks/**/*", "test/**/*", "deploy/**/*", "types/"]
 }

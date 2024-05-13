@@ -12,6 +12,8 @@
     "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.2",
+    "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.1.0",
@@ -31,7 +33,9 @@
     "hardhat-deploy": "^0.12.1",
     "hardhat-gas-reporter": "^1.0.9",
     "lodash": "^4.17.21",
+    "merkletreejs": "^0.3.11",
     "mocha": "^10.2.0",
+    "node-xlsx": "^0.23.0",
     "prettier": "^3.1.1",
     "prettier-plugin-solidity": "^1.2.0",
     "rimraf": "^5.0.5",
@@ -41,7 +45,8 @@
     "ts-generator": "^0.1.1",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "web3": "^4.6.0"
   },
   "files": [
     "contracts"
@@ -75,5 +80,8 @@
     "task:withdraw": "hardhat task:withdraw",
     "test": "hardhat test",
     "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain"
+  },
+  "dependencies": {
+    "@poanet/solidity-flattener": "^3.0.9"
   }
 }

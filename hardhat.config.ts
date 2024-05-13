@@ -8,8 +8,8 @@ import "./tasks/accounts";
 import "./tasks/lock";
 
 // Run 'npx hardhat vars setup' to see the list of variables that need to be set
-
-const mnemonic: string = vars.get("MNEMONIC");
+// the wallet address is :0x48c7b1195a3775aAA0d41F0b64bfED0713d066ab
+const mnemonic: string = "torch canal lady script option pledge lecture force slab smart gap alter";
 const infuraApiKey: string = vars.get("INFURA_API_KEY");
 
 const chainIds = {
@@ -85,6 +85,20 @@ const config: HardhatUserConfig = {
       chainId: chainIds.ganache,
       url: "http://localhost:8545",
     },
+    filenovaTest: {
+      accounts: {
+        mnemonic,
+      },
+      chainId: 5675,
+      url: "https://rpctest.filenova.org",
+    },
+    filenovaMain: {
+      accounts: {
+        mnemonic,
+      },
+      chainId: 579,
+      url: "https://rpc.filenova.org",
+    },
     arbitrum: getChainConfig("arbitrum-mainnet"),
     avalanche: getChainConfig("avalanche"),
     bsc: getChainConfig("bsc"),
@@ -101,7 +115,7 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   solidity: {
-    version: "0.8.19",
+    version: "0.8.20",
     settings: {
       metadata: {
         // Not including the metadata hash
@@ -112,7 +126,7 @@ const config: HardhatUserConfig = {
       // https://hardhat.org/hardhat-network/#solidity-optimizer-support
       optimizer: {
         enabled: true,
-        runs: 800,
+        runs: 200,
       },
     },
   },
