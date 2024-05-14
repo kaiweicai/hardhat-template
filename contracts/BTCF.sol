@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract MyToken is ERC20, Ownable {
+contract BTCF is ERC20, Ownable {
     using Math for uint256;
 
     uint256 public constant FEE_PERCENT = 10; // 10% fee
@@ -13,7 +13,13 @@ contract MyToken is ERC20, Ownable {
     event TransferWithFee(address indexed from, address indexed to, uint256 value, uint256 fee);
     event FeeWithdrawn(address indexed owner, uint256 amount);
 
-    constructor(string memory name, string memory symbol) ERC20(name, symbol) Ownable(_msgSender()) {}
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 initialSupply
+    ) ERC20(name, symbol) Ownable(_msgSender()) {
+        _mint(msg.sender, initialSupply);
+    }
 
     function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
         uint256 fee = (amount * FEE_PERCENT) / (100);
