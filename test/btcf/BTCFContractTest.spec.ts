@@ -7,6 +7,7 @@ import { ethers } from "hardhat";
 
 const INITIAL_AMOUNT = 1000000;
 const PERCENT = 1000;
+const DENOMINATOR = 10000;
 
 describe("AirDrop", function () {
   async function deployTokenFixture() {
@@ -27,11 +28,15 @@ describe("AirDrop", function () {
       expect(await btcf.balanceOf(owner)).to.be.equal(INITIAL_AMOUNT);
       const transfer_amount = 10000;
       await btcf.transfer(account1, transfer_amount);
-      expect(await btcf.balanceOf(account1)).to.be.equal((transfer_amount * (10000 - PERCENT)) / 10000);
-      expect(await btcf.balanceOf(owner)).to.be.equal(INITIAL_AMOUNT - (transfer_amount * (10000 - PERCENT)) / 10000);
-      // const balanceOfOwner = await btcf.balanceOf(owner);
-      // await btcf.transfer(account3, balanceOfOwner);
-      // expect(await btcf.balanceOf(owner)).to.be.equal(0);
+      expect(await btcf.balanceOf(account1)).to.be.equal((transfer_amount * (DENOMINATOR - PERCENT)) / DENOMINATOR);
+      expect(await btcf.balanceOf(owner)).to.be.equal(
+        INITIAL_AMOUNT - (transfer_amount * (DENOMINATOR - PERCENT)) / 10000,
+      );
+      await btcf.setFeeReceiver(account2);
+      const transferAccount3Amount = 1000;
+      await btcf.transfer(account3, transferAccount3Amount);
+      const receivedFee = await btcf.balanceOf(account2);
+      expect(receivedFee).to.be.equal((transferAccount3Amount * PERCENT) / DENOMINATOR);
     });
   });
 });

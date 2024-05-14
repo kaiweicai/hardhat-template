@@ -10,6 +10,8 @@ contract BTCF is ERC20, Ownable {
 
     uint256 public constant FEE_PERCENT = 10; // 10% fee
 
+    address public feeReceiver;
+
     event TransferWithFee(address indexed from, address indexed to, uint256 value, uint256 fee);
     event FeeWithdrawn(address indexed owner, uint256 amount);
 
@@ -19,6 +21,7 @@ contract BTCF is ERC20, Ownable {
         uint256 initialSupply
     ) ERC20(name, symbol) Ownable(_msgSender()) {
         _mint(msg.sender, initialSupply);
+        feeReceiver = msg.sender;
     }
 
     function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
@@ -26,7 +29,7 @@ contract BTCF is ERC20, Ownable {
         uint256 transferAmount = amount - (fee);
 
         _transfer(_msgSender(), recipient, transferAmount);
-        _transfer(_msgSender(), owner(), fee);
+        _transfer(_msgSender(), feeReceiver, fee);
 
         emit TransferWithFee(_msgSender(), recipient, transferAmount, fee);
         return true;
@@ -37,16 +40,14 @@ contract BTCF is ERC20, Ownable {
         uint256 transferAmount = amount - fee;
 
         _transfer(sender, recipient, transferAmount);
-        _transfer(sender, owner(), fee);
+        _transfer(sender, feeReceiver, fee);
         _approve(sender, _msgSender(), allowance(sender, _msgSender()) - amount);
 
         emit TransferWithFee(sender, recipient, transferAmount, fee);
         return true;
     }
 
-    function withdrawFee(uint256 amount) public onlyOwner {
-        require(amount <= address(this).balance, "Insufficient balance in contract");
-        payable(owner()).transfer(amount);
-        emit FeeWithdrawn(owner(), amount);
+    function setFeeReceiver(address _feeReceiver) public onlyOwner {
+        feeReceiver = _feeReceiver;
     }
 }
