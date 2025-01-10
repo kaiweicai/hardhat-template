@@ -2,6 +2,140 @@
 
 // SPDX-License-Identifier: MIT
 
+// File @openzeppelin/contracts/utils/Context.sol@v5.0.2
+
+// Original license: SPDX_License_Identifier: MIT
+// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
+
+pragma solidity ^0.8.20;
+
+/**
+ * @dev Provides information about the current execution context, including the
+ * sender of the transaction and its data. While these are generally available
+ * via msg.sender and msg.data, they should not be accessed in such a direct
+ * manner, since when dealing with meta-transactions the account sending and
+ * paying for execution may not be the actual sender (as far as an application
+ * is concerned).
+ *
+ * This contract is only required for intermediate, library-like contracts.
+ */
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
+
+    function _contextSuffixLength() internal view virtual returns (uint256) {
+        return 0;
+    }
+}
+
+
+// File @openzeppelin/contracts/access/Ownable.sol@v5.0.2
+
+// Original license: SPDX_License_Identifier: MIT
+// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)
+
+pragma solidity ^0.8.20;
+
+/**
+ * @dev Contract module which provides a basic access control mechanism, where
+ * there is an account (an owner) that can be granted exclusive access to
+ * specific functions.
+ *
+ * The initial owner is set to the address provided by the deployer. This can
+ * later be changed with {transferOwnership}.
+ *
+ * This module is used through inheritance. It will make available the modifier
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
+ * the owner.
+ */
+abstract contract Ownable is Context {
+    address private _owner;
+
+    /**
+     * @dev The caller account is not authorized to perform an operation.
+     */
+    error OwnableUnauthorizedAccount(address account);
+
+    /**
+     * @dev The owner is not a valid owner account. (eg. `address(0)`)
+     */
+    error OwnableInvalidOwner(address owner);
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.
+     */
+    constructor(address initialOwner) {
+        if (initialOwner == address(0)) {
+            revert OwnableInvalidOwner(address(0));
+        }
+        _transferOwnership(initialOwner);
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        _checkOwner();
+        _;
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if the sender is not the owner.
+     */
+    function _checkOwner() internal view virtual {
+        if (owner() != _msgSender()) {
+            revert OwnableUnauthorizedAccount(_msgSender());
+        }
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby disabling any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        _transferOwnership(address(0));
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        if (newOwner == address(0)) {
+            revert OwnableInvalidOwner(address(0));
+        }
+        _transferOwnership(newOwner);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Internal function without access restriction.
+     */
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+
+
 // File @openzeppelin/contracts/interfaces/draft-IERC6093.sol@v5.0.2
 
 // Original license: SPDX_License_Identifier: MIT
@@ -166,6 +300,7 @@ interface IERC1155Errors {
     error ERC1155InvalidArrayLength(uint256 idsLength, uint256 valuesLength);
 }
 
+
 // File @openzeppelin/contracts/token/ERC20/IERC20.sol@v5.0.2
 
 // Original license: SPDX_License_Identifier: MIT
@@ -248,6 +383,7 @@ interface IERC20 {
     function transferFrom(address from, address to, uint256 value) external returns (bool);
 }
 
+
 // File @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol@v5.0.2
 
 // Original license: SPDX_License_Identifier: MIT
@@ -275,36 +411,6 @@ interface IERC20Metadata is IERC20 {
     function decimals() external view returns (uint8);
 }
 
-// File @openzeppelin/contracts/utils/Context.sol@v5.0.2
-
-// Original license: SPDX_License_Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
-
-pragma solidity ^0.8.20;
-
-/**
- * @dev Provides information about the current execution context, including the
- * sender of the transaction and its data. While these are generally available
- * via msg.sender and msg.data, they should not be accessed in such a direct
- * manner, since when dealing with meta-transactions the account sending and
- * paying for execution may not be the actual sender (as far as an application
- * is concerned).
- *
- * This contract is only required for intermediate, library-like contracts.
- */
-abstract contract Context {
-    function _msgSender() internal view virtual returns (address) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
-    }
-
-    function _contextSuffixLength() internal view virtual returns (uint256) {
-        return 0;
-    }
-}
 
 // File @openzeppelin/contracts/token/ERC20/ERC20.sol@v5.0.2
 
@@ -312,6 +418,9 @@ abstract contract Context {
 // OpenZeppelin Contracts (last updated v5.0.0) (token/ERC20/ERC20.sol)
 
 pragma solidity ^0.8.20;
+
+
+
 
 /**
  * @dev Implementation of the {IERC20} interface.
@@ -620,110 +729,100 @@ abstract contract ERC20 is Context, IERC20, IERC20Metadata, IERC20Errors {
     }
 }
 
-// File @openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol@v5.0.2
+
+// File contracts/TYTY.sol
 
 // Original license: SPDX_License_Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.0.0) (token/ERC20/extensions/ERC20Burnable.sol)
+pragma solidity ^0.8.0;
 
-pragma solidity ^0.8.20;
 
-/**
- * @dev Extension of {ERC20} that allows token holders to destroy both their own
- * tokens and those that they have an allowance for, in a way that can be
- * recognized off-chain (via event analysis).
- */
-abstract contract ERC20Burnable is Context, ERC20 {
-    /**
-     * @dev Destroys a `value` amount of tokens from the caller.
-     *
-     * See {ERC20-_burn}.
-     */
-    function burn(uint256 value) public virtual {
-        _burn(_msgSender(), value);
+contract TYTY is ERC20, Ownable {
+    // // The address of the manager
+    // address public manager;
+    // The marketing wallet allocation ratio, in ten-thousandths
+    uint256 public constant MARKETING_WALLET_RATE = 200;
+    // The liquidity wallet allocation ratio, in ten-thousandths
+    uint256 public constant LIQUIDITY_WALLET_RATE = 400;
+    // The first-generation promotion ratio, in ten-thousandths
+    uint256 public constant FIRST_GENERATION_RATE = 150;
+    // The second-generation promotion ratio, in ten-thousandths
+    uint256 public constant SECOND_GENERATION_RATE = 50;
+    // the divisor
+    uint256 public constant DIVISOR = 10000;
+
+    // The marketing wallet address
+    address public marketingWallet;
+    // The LP dividend wallet for the liquidity pool
+    address public liquidityWallet;
+
+    // Record the referral relationships of users. The key is the referred user, and the value is the referrer.
+    mapping(address => address) public referrals;
+    // Reverse mapping, used to quickly find all referrals
+    mapping(address => address[]) public allRecommend;
+
+    constructor(
+        string memory name,
+        string memory symbol,
+        address _marketingWallet,
+        address _liquidityWallet,
+        address _mineWallet,
+        uint256 _initMintAmount
+    ) ERC20(name, symbol) Ownable(_msgSender()) {
+        super._mint(_mineWallet, _initMintAmount);
+        marketingWallet = _marketingWallet;
+        liquidityWallet = _liquidityWallet;
     }
 
-    /**
-     * @dev Destroys a `value` amount of tokens from `account`, deducting from
-     * the caller's allowance.
-     *
-     * See {ERC20-_burn} and {ERC20-allowance}.
-     *
-     * Requirements:
-     *
-     * - the caller must have allowance for ``accounts``'s tokens of at least
-     * `value`.
-     */
-    function burnFrom(address account, uint256 value) public virtual {
-        _spendAllowance(account, _msgSender(), value);
-        _burn(account, value);
-    }
-}
-
-// File contracts/tokens/MyToken.sol
-
-// Original license: SPDX_License_Identifier: MIT
-pragma solidity ^0.8.20;
-contract MyToken is ERC20Burnable {
-    function isOwner() public view returns (bool) {
-        return _msgSender() == _owner;
+    function decimals() public pure override returns (uint8) {
+        return 9;
     }
 
-    modifier onlyOwner() {
-        require(isOwner(), "Ownable: caller is not the owner");
-
-        _;
-    }
-    // mapping(address => bool) public isManager;
-    // event SetManager(address manager, bool flag);
-    address private _owner;
-
-    constructor() ERC20("My Token", "MTK") {}
-
-    // function initialize(string memory name, string memory symbol) public{
-    //     address msgSender = _msgSender();
-    //     _owner = msgSender;
-    //     __ERC20_init(name, symbol);
-    //     // setManager(_msgSender(),true);
+    // function setManager(address _manager) public onlyOwner {
+    //     manager = _manager;
     // }
 
-    // function setManager(address manager, bool flag) public onlyOwner {
-    //     isManager[manager] = flag;
-    //     emit SetManager(manager, flag);
+    // modifier onlyManager() {
+    //     require(msg.sender == manager, "only manager");
+    //     _;
     // }
 
-    // function getManager(address manager) public view returns (bool) {
-    //     return isManager[manager];
-    // }
-
-    function mint(address _toAddress, uint256 _mintNum) public {
-        _mint(_toAddress, _mintNum);
+    function transfer(address to, uint256 amount) public override returns (bool) {
+        return _transferWithReferral(msg.sender, to, amount);
     }
 
-    // function burn(uint256 _burnAmount) public onlyOwner {
-    //     _burn(_msgSender(), _burnAmount);
-    // }
-
-    function decimals() public view virtual override returns (uint8) {
-        return 6;
+    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
+        _spendAllowance(from, msg.sender, amount);
+        return _transferWithReferral(from, to, amount);
     }
 
-    // function setLabsAddress(address _labsAddress) public onlyOwner {
-    //     _setLabsAddress(_labsAddress);
-    // }
+    function _transferWithReferral(address from, address to, uint256 amount) internal returns (bool) {
+        require(from != address(0), "ERC20: transfer from the zero address");
+        require(to != address(0), "ERC20: transfer to the zero address");
 
-    // function setLiquidityAddress(address _liquidityAddress) public onlyOwner {
-    //     _setLiquidityAddress(_liquidityAddress);
-    // }
+        // Handle the referral relationship
+        if (referrals[to] == address(0)) {
+            referrals[to] = from;
+            allRecommend[from].push(to);
+        }
 
-    // function setTokenDecimals(uint256 _tokenDecimals) public onlyOwner {
-    //     _setTokenDecimals(_tokenDecimals);
-    // }
+        // First transfer the full amount to 'to'
+        _transfer(from, to, amount);
 
-    // function setFromWhiteListAddress(address account,bool value) public onlyOwner {
-    //     _setFromWhiteListAddress(account,value);
-    // }
+        uint256 marketingAmount = (amount * MARKETING_WALLET_RATE) / DIVISOR;
+        uint256 liquidityAmount = (amount * LIQUIDITY_WALLET_RATE) / DIVISOR;
+        uint256 firstGenerationAmount = (amount * FIRST_GENERATION_RATE) / DIVISOR;
+        uint256 secondGenerationAmount = (amount * SECOND_GENERATION_RATE) / DIVISOR;
 
-    // function setToWhiteListAddress(address account,bool value) public onlyOwner {
-    //     _setToWhiteListAddress(account,value);
-    // }
+        // Deduct and distribute the corresponding amounts from 'to''s account
+        _transfer(to, referrals[to], firstGenerationAmount);
+        if (referrals[referrals[to]] != address(0)) {
+            _transfer(to, referrals[referrals[to]], secondGenerationAmount);
+        } else {
+            _transfer(to, referrals[to], secondGenerationAmount);
+        }
+        _transfer(to, marketingWallet, marketingAmount);
+        _transfer(to, liquidityWallet, liquidityAmount);
+
+        return true;
+    }
 }

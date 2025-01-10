@@ -9,7 +9,7 @@ import "./tasks/lock";
 
 // Run 'npx hardhat vars setup' to see the list of variables that need to be set
 // the wallet address is :0x48c7b1195a3775aAA0d41F0b64bfED0713d066ab
-const mnemonic: string = "torch canal lady script option pledge lecture force slab smart gap alter";
+const mnemonic: string = "clown ability net when average siren air car joke total pilot shy";
 const infuraApiKey: string = vars.get("INFURA_API_KEY");
 
 const chainIds = {
@@ -92,12 +92,12 @@ const config: HardhatUserConfig = {
       chainId: 5675,
       url: "https://rpctest.filenova.org",
     },
-    filenovaMain: {
+    maticTest: {
       accounts: {
         mnemonic,
       },
-      chainId: 579,
-      url: "https://rpc.filenova.org",
+      chainId: 2442,
+      url: "https://rpc.cardona.zkevm-rpc.com",
     },
     arbitrum: getChainConfig("arbitrum-mainnet"),
     avalanche: getChainConfig("avalanche"),

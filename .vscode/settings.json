@@ -4,5 +4,6 @@
   "prettier.documentSelectors": ["**/*.sol"],
   "solidity.formatter": "prettier",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "solidity.compileUsingRemoteVersion": "v0.8.20+commit.a1b79de6"
+  "solidity.compileUsingRemoteVersion": "v0.8.20+commit.a1b79de6",
+  "cSpell.words": ["TYTY"]
 }
